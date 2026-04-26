@@ -68,3 +68,84 @@ python view_success_examples.py \
   --random_select \
   --seed 42 \
   --save_individual
+
+#############################################
+
+python gaker.py \
+  --state train_model \
+  --dataset_name imagenet \
+  --datasets_root ./datasets \
+  --Source_Model ResNet50 \
+  --use_pretrained true \
+  --epoch 20 \
+  --batch_size 16 \
+  --channel 32 \
+  --channel_mult 1 2 3 4 \
+  --num_res_blocks 1 \
+  --lr 1e-4 \
+  --eps 0.062745098 \
+  --noise_loss_weight 0.5 \
+  --num_known_classes 200 \
+  --samples_per_known_class 325 \
+  --split_seed 42 \
+  --device cuda:0 \
+  --num_workers 12 \
+  --Generator_save_dir ./checkpoints/gaker_imagenet_resnet50
+
+
+python evaluate_attack.py \
+  --dataset_name imagenet \
+  --data_root ./datasets/imagenet_data \
+  --image_size 224 \
+  --scale_size 256 \
+  --num_classes 1000 \
+  --source_model_name resnet50 \
+  --use_imagenet_pretrained \
+  --generator_checkpoint ./checkpoints/gaker_imagenet_resnet50/ckpt_19_ResNet50_.pt \
+  --channel 32 \
+  --channel_mult 1 2 3 4 \
+  --num_res_blocks 1 \
+  --split_seed 42 \
+  --split_strategy random \
+  --use_generator_training_split true \
+  --batch_size 32 \
+  --num_workers 8 \
+  --max_eval_samples_per_split 3000 \
+  --eps 0.062745098 \
+  --device cuda \
+  --use_amp \
+  --save_examples \
+  --save_dir ./eval_outputs/gaker_imagenet_resnet50_eval
+
+python export_adversarial_dataset.py \
+  --dataset_name imagenet \
+  --data_root ./datasets/imagenet_data \
+  --base_split test \
+  --image_size 224 \
+  --scale_size 256 \
+  --num_classes 1000 \
+  --source_model_name resnet50 \
+  --use_imagenet_pretrained \
+  --generator_checkpoint ./checkpoints/gaker_imagenet_resnet50/ckpt_19_ResNet50_.pt \
+  --channel 32 \
+  --channel_mult 1 2 3 4 \
+  --num_res_blocks 1 \
+  --split_seed 42 \
+  --split_strategy random \
+  --target_mode unknown \
+  --batch_size 32 \
+  --num_workers 8 \
+  --max_samples 3000 \
+  --eps 0.062745098 \
+  --device cuda \
+  --use_amp \
+  --save_delta_visualization \
+  --save_delta_tensor \
+  --save_dir ./exported_adv/imagenet_resnet50_unknown_3000
+
+python view_success_examples.py \
+  --export_root ./exported_adv/imagenet_resnet50_unknown_3000 \
+  --num_images 10 \
+  --random_select \
+  --output_grid successful_unknown_examples_grid.png \
+  --save_individual

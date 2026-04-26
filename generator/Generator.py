@@ -6,7 +6,7 @@ from torch.nn import init
 from torch.nn import functional as F
 from einops import rearrange                                                                     
 
-
+# Converts target feature to generator embedding, Makes target feature compatible with generator, FTM
 class TargetEmbedding(nn.Module):
     def __init__(self, dim, feature_channel_num):
         super().__init__()
@@ -19,6 +19,7 @@ class TargetEmbedding(nn.Module):
         mix_linear = self.linear(mix)
         return mix_linear
 
+#Reduces spatial resolution , Extracts deeper semantic source features
 class DownSample(nn.Module):
     def __init__(self, in_ch):
         super().__init__()
@@ -30,7 +31,7 @@ class DownSample(nn.Module):
         x = self.c1(x)+self.c2(x)
         return x
 
-
+# Increases spatial resolution ,Reconstructs full-size image
 class UpSample(nn.Module):
     def __init__(self, in_ch):
         super().__init__()
@@ -42,7 +43,7 @@ class UpSample(nn.Module):
         x = self.t(x)
         return x
 
-
+# Adds global attention , Refines source-target mixed features globally
 class AttnBlock(nn.Module):
     def __init__(self, in_ch):
         super().__init__()
@@ -70,6 +71,7 @@ class AttnBlock(nn.Module):
         out = self.out(out)
         return x + out
 
+# Main convolution + target injection block, Core latent infection mechanism,
 class ResBlock(nn.Module):
     def __init__(self, in_ch, out_ch, tdim, attn=True):
         super().__init__()
@@ -112,6 +114,7 @@ class ResBlock(nn.Module):
 
         return h
 
+# Channel-wise gating , Emphasizes useful final channels
 class GCT(nn.Module):
 
     def __init__(self, num_channels, tdim, epsilon=1e-5, mode='l2', after_relu=False):
@@ -144,6 +147,7 @@ class GCT(nn.Module):
 
         return x * gate
 
+# Builds full UNet-style attack model,	Produces adversarial image from source image and target feature
 class Generator(nn.Module):
     def __init__(self, num_target,feature_channel_num, ch, ch_mult, num_res_blocks,inception=False):
 

@@ -17,11 +17,11 @@ from tqdm import tqdm
 from defense.path_setup import add_project_root_to_path
 add_project_root_to_path()
 
-from utils.source_model_utils import SourceModelConfig, build_source_model, normalize_imagenet  # noqa: E402
-from defense.datasets import DefenseDataset, defense_collate  # noqa: E402
-from defense.losses import LossWeights, compute_defense_losses, label_accuracy, target_hit_rate  # noqa: E402
-from defense.model import DefenseConfig, LatentSemanticDefense  # noqa: E402
-from defense.utils import AverageMeter, ensure_dir, save_json, set_seed  # noqa: E402
+from utils.source_model_utils import SourceModelConfig, build_source_model, normalize_imagenet  
+from defense.datasets import DefenseDataset, defense_collate  
+from defense.losses import LossWeights, compute_defense_losses, label_accuracy, target_hit_rate  
+from defense.model import DefenseConfig, LatentSemanticDefense  
+from defense.utils import AverageMeter, ensure_dir, save_json, set_seed  
 
 
 @dataclass

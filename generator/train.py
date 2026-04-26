@@ -181,9 +181,6 @@ def build_cifar_dataset(dataset_name: str, root: str, train: bool, transform):
 
 def build_imagefolder_dataset(dataset_name: str, root: str, transform):
     if dataset_name == "tinyimagenet":
-        # expected root:
-        #   <datasets_root>/tiny-imagenet-200
-        # and data under train/
         resolved_root = resolve_imagefolder_root(root, ["train"])
         return torchvision.datasets.ImageFolder(resolved_root, transform=transform)
 
