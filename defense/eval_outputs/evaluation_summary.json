@@ -1,0 +1,8 @@
+{
+  "source_acc_on_adv": 0.09666666666666666,
+  "source_acc_on_purified": 0.9083333333333333,
+  "target_hit_on_adv": 0.31333333333333335,
+  "target_hit_on_purified": 0.0,
+  "checkpoint_path": "./defense/checkpoints/imagenet_resnet50_baseline/best_defense.pt",
+  "split_root": "./defense/dataset/test"
+}

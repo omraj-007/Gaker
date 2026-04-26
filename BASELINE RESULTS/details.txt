@@ -1,0 +1,22 @@
+generator checkpoint path:
+generator_checkpoint: "./checkpoints/gaker_imagenet_resnet50_random200/ckpt_24_ResNet50_.pt"
+
+exact command used:
+python evaluate_attack.py \
+  --dataset_name imagenet \
+  --data_root ./datasets \
+  --source_model_name resnet50 \
+  --generator_checkpoint ./checkpoints/gaker_imagenet_resnet50/ckpt_24_ResNet50_.pt \
+  --channel 32 \
+  --channel_mult 1 2 3 4 \
+  --num_res_blocks 1 \
+  --batch_size 32 \
+  --num_workers 4 \
+  --device cuda \
+  --use_amp \
+  --image_size 224 \
+  --scale_size 256 \
+  --max_eval_samples_per_split 1000 \
+  --save_dir ./eval_outputs/baseline_eval_1000
+
+known/unknown ASR for 1000 samples:
